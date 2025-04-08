@@ -277,6 +277,8 @@ body {
   <div class="total-general" id="totalGeneral">Total acumulado: $0</div>
 
 <script>
+  const sonidoPop = new Audio('pop-39222.mp3');
+
   const sabores = [
   '🥭 Maracuyá', '🍓 Fresa', '🍍 Piña', '🥭 Mango', '☕ Café',
   '🥥 Coco', '🍫 Chocolate', '🍒 Cereza', '🍬 Chicle', '🍋 Limón',
@@ -315,6 +317,7 @@ const salsasDisponibles = [
 
   
   function validarSalsas(checkbox) {
+    reproducirPop();
     document.querySelectorAll('#salsasContainer .sabor').forEach(div => {
       div.classList.toggle('selected', div.querySelector('input').checked);
     });
@@ -354,6 +357,9 @@ const salsasDisponibles = [
       alerta.style.display = "block";
       alerta.textContent = `⚠️ Solo puedes elegir ${max} sabor${max > 1 ? 'es' : ''} para un helado ${tamano}.`;
       setTimeout(() => alerta.style.display = "none", 3000);
+    }else {
+      // ✅ Solo reproducir sonido si la selección fue válida
+      reproducirPop();
     }
 
     document.querySelectorAll('.sabor').forEach(div => {
@@ -371,14 +377,26 @@ const salsasDisponibles = [
       alerta.style.display = "block";
       alerta.textContent = `⚠️ Solo puedes seleccionar hasta ${max} topping${max > 1 ? 's' : ''}.`;
       setTimeout(() => alerta.style.display = "none", 3000);
-    }
+    } else {
+    // ✅ Solo reproducir sonido si la selección fue válida
+    reproducirPop();
+  }
   
     document.querySelectorAll('.sabor').forEach(div => {
       div.classList.toggle('selected', div.querySelector('input').checked);
     });
   }
 
-  
+
+
+function reproducirPop() {
+  sonidoPop.currentTime = 0; // Reinicia por si ya está sonando
+  sonidoPop.play();
+}
+
+
+
+
   
 
   function actualizarPrecio() {
