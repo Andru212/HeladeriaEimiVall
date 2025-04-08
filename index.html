@@ -263,6 +263,23 @@ body {
     text-align: left;
   }
   
+
+  .contenedor-calificacion {
+    text-align: center;
+    font-size: 2em;
+    margin: 20px 0;
+  }
+  
+  .estrella {
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.3s;
+  }
+  
+  .estrella.seleccionada {
+    color: #FFD700; /* dorado tipo estrella */
+  }
+  
   
       
   </style>
@@ -306,6 +323,14 @@ body {
     </div>
   </div>
   
+  <div class="contenedor-calificacion">
+    <span class="estrella" data-valor="1">★</span>
+    <span class="estrella" data-valor="2">★</span>
+    <span class="estrella" data-valor="3">★</span>
+    <span class="estrella" data-valor="4">★</span>
+    <span class="estrella" data-valor="5">★</span>
+  </div>
+  <p id="resultadoCalificacion"></p>
   
   
 
@@ -480,7 +505,30 @@ const salsasDisponibles = [
 
 
 
-
+  const estrellas = document.querySelectorAll('.estrella');
+  const resultado = document.getElementById('resultadoCalificacion');
+  
+  estrellas.forEach((estrella, index) => {
+    estrella.addEventListener('click', () => {
+      const valor = index + 1;
+  
+      estrellas.forEach((e, i) => {
+        e.classList.toggle('seleccionada', i < valor);
+      });
+  
+      resultado.textContent = `¡Gracias! Calificaste con ${valor} estrella${valor > 1 ? 's' : ''} ⭐`;
+  
+        // Enviar al servidor
+        fetch('guardar.php', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          body: `calificacion=${valor}`
+        })
+        .then(res => res.text())
+        .then(data => console.log(data));
+    });
+  });
+  
   
 
   function actualizarPrecio() {
