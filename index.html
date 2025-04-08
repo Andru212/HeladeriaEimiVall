@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Pedidos Heladería EV</title>
+  <style>
+  /* Estilo general para pantallas móviles */
+body {
+    font-family: 'Arial', sans-serif;
+    background: #fffbe6;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Asegura que todo use box-sizing: border-box */
+  *, *::before, *::after {
+    box-sizing: inherit;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #d63384;
+    font-size: 1.6em;
+    margin: 1em 0;
+  }
+  
+  /* Contenedor del formulario */
+  form {
+    background: #fff;
+    border-radius: 15px;
+    padding: 1.5em 1em;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    width: 95%;
+    max-width: 420px;
+  }
+  
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1em;
+  }
+  
+  input[type="text"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+  }
+  
+  .sabores-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .sabor {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    text-align: left;
+  }
+  
+  .sabor.selected {
+    background-color: #d63384;
+    color: white;
+    border-color: #c1126f;
+  }
+  
+  .boton {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+    background-color: #d63384;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.2s ease;
+  }
+  
+  .boton:hover {
+    background-color: #b0266a;
+  }
+  
+  #listaHelados {
+    margin-top: 20px;
+    background: #fff;
+    padding: 1em;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .total-general {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 15px;
+    font-size: 1.1em;
+  }
+  
+  #mensajeAlerta {
+    color: red;
+    font-size: 0.95em;
+    margin-top: 5px;
+    text-align: center;
+  }
+  
+  /* Asegura una buena experiencia incluso en pantallas ultra pequeñas */
+  @media screen and (max-width: 320px) {
+    form {
+      padding: 1em 0.5em;
+    }
+  }
+  
+      
+  </style>
+</head>
+<body>
+
+  <h1>🍦 Pedidos Heladería EV 🍓</h1>
+
+  <form onsubmit="event.preventDefault(); agregarHelado();">
+    <label for="nombre">Tu nombre:</label>
+    <input type="text" id="nombre" placeholder="Ej: Camila" required>
+
+    <label for="tamano">Tamaño del Helado:</label>
+    <select id="tamano" onchange="actualizarSabores(); actualizarToppings(); actualizarPrecio();" required>
+      <option value="">Selecciona</option>
+      <option value="pequeño">Pequeño (2 rollos / 1 sabor)</option>
+      <option value="mediano">Mediano (4 rollos / hasta 2 sabores)</option>
+      <option value="grande">Grande (6 rollos / hasta 2 sabores)</option>
+    </select>
+
+    <label for="cantidadToppings">Toppings adicionales:</label>
+    <select id="cantidadToppings" onchange="actualizarPrecio(); actualizarToppings()" required>
+      <option value="">Selecciona</option>
+      <option value="0">0 adicionales (1 incluido)</option>
+      <option value="1">1 adicional</option>
+      <option value="2">2 adicionales</option>
+    </select>
+
+    <label>Selecciona los sabores:</label>
+    <div id="saboresContainer" class="sabores-container"></div>
+
+    <label>Selecciona los toppings:</label>
+    <div id="toppingsContainer" class="sabores-container"></div>
+
+    <label>Selecciona las salsas:</label>
+    <div id="salsasContainer" class="sabores-container"></div>
+
+
+    <div id="mensajeAlerta" style="display: none; color: red; font-weight: bold;"></div>
+
+    <label for="comentario">Comentario (opcional):</label>
+    <textarea id="comentario" placeholder="Ej: sin azúcar, sin leche..."></textarea>
+
+    <p id="precioTotal"><strong>Precio total:</strong> $0</p>
+
+    <button type="submit" class="boton">Agregar helado 🍨</button>
+    <button type="button" class="boton" onclick="enviarPedido()">Enviar pedido por WhatsApp 📲</button>
+  </form>
+
+  <div class="lista-helados" id="listaHelados"></div>
+  <div class="total-general" id="totalGeneral">Total acumulado: $0</div>
+
+<script>
+  const sabores = ['Quipitos', 'Arequipe', 'Mango', 'Crema de avellanas', 'Crema de wisky', 'Café', 'Coco', 'Fresa', 'Oreo', 'Kinder'];
+  const toppingsDisponibles = ['Gomita', 'Bandera', 'Maní', 'Gusanito', 'M&M'];
+  const salsasDisponibles = ['Chocolate', 'Cereza', 'Arequipe', 'Chicle', 'Mora'];
+  const precios = {
+    pequeño: [3500, 4500, 5500],
+    mediano: [6500, 7500, 8500],
+    grande:  [8500, 9500, 10500]
+  };
+  const helados = [];
+
+  function actualizarSalsas() {
+    const contenedor = document.getElementById('salsasContainer');
+    contenedor.innerHTML = "";
+    salsasDisponibles.forEach(salsa => {
+      const div = document.createElement('div');
+      div.className = "sabor";  // ✅ usa la misma clase que sabores y toppings
+      div.innerHTML = `<label><input type="checkbox" value="${salsa}" onchange="validarSalsas(this)"> ${salsa}</label>`;
+      contenedor.appendChild(div);
+    });
+  }
+
+  
+  function validarSalsas(checkbox) {
+    document.querySelectorAll('#salsasContainer .sabor').forEach(div => {
+      div.classList.toggle('selected', div.querySelector('input').checked);
+    });
+  }
+  
+
+  function actualizarSabores() {
+    const contenedor = document.getElementById('saboresContainer');
+    contenedor.innerHTML = "";
+    sabores.forEach(sabor => {
+      const div = document.createElement('div');
+      div.className = "sabor";
+      div.innerHTML = `<label><input type="checkbox" value="${sabor}" onchange="validarSabores(this)"> ${sabor}</label>`;
+      contenedor.appendChild(div);
+    });
+  }
+
+  function actualizarToppings() {
+    const contenedor = document.getElementById('toppingsContainer');
+    contenedor.innerHTML = "";
+    toppingsDisponibles.forEach(top => {
+      const div = document.createElement('div');
+      div.className = "sabor";
+      div.innerHTML = `<label><input type="checkbox" value="${top}" onchange="validarToppings(this)"> ${top}</label>`;
+      contenedor.appendChild(div);
+    });
+  }
+
+  function validarSabores(checkbox) {
+    const seleccionados = document.querySelectorAll('.sabores-container input:checked');
+    const tamano = document.getElementById('tamano').value;
+    const max = tamano === 'pequeño' ? 1 : tamano === 'mediano' ? 2 : 3;
+    const alerta = document.getElementById('mensajeAlerta');
+
+    if (seleccionados.length > max) {
+      checkbox.checked = false;
+      alerta.style.display = "block";
+      alerta.textContent = `⚠️ Solo puedes elegir ${max} sabor${max > 1 ? 'es' : ''} para un helado ${tamano}.`;
+      setTimeout(() => alerta.style.display = "none", 3000);
+    }
+
+    document.querySelectorAll('.sabor').forEach(div => {
+      div.classList.toggle('selected', div.querySelector('input').checked);
+    });
+  }
+
+  function validarToppings(checkbox) {
+    const seleccionados = document.querySelectorAll('#toppingsContainer input:checked');
+    const max = parseInt(document.getElementById('cantidadToppings').value || 0) + 1;
+    const alerta = document.getElementById('mensajeAlerta');
+  
+    if (seleccionados.length > max) {
+      checkbox.checked = false;
+      alerta.style.display = "block";
+      alerta.textContent = `⚠️ Solo puedes seleccionar hasta ${max} topping${max > 1 ? 's' : ''}.`;
+      setTimeout(() => alerta.style.display = "none", 3000);
+    }
+  
+    document.querySelectorAll('.topping').forEach(div => {
+      div.classList.toggle('selected', div.querySelector('input').checked);
+    });
+  }
+
+  
+  
+
+  function actualizarPrecio() {
+    const tamano = document.getElementById('tamano').value;
+    const toppingExtra = parseInt(document.getElementById('cantidadToppings').value || 0);
+    if (!tamano) {
+      document.getElementById('precioTotal').textContent = "Precio total: $0";
+      return;
+    }
+    const precioBase = precios[tamano][toppingExtra];
+    document.getElementById('precioTotal').textContent = `Precio total: $${precioBase.toLocaleString()}`;
+  }
+
+  function agregarHelado() {
+    const tamano = document.getElementById('tamano').value;
+    const toppingsCantidad = parseInt(document.getElementById('cantidadToppings').value);
+    const saboresSeleccionados = Array.from(document.querySelectorAll('#saboresContainer input:checked')).map(cb => cb.value);
+    const toppingsSeleccionados = Array.from(document.querySelectorAll('#toppingsContainer input:checked')).map(cb => cb.value);
+    const salsasSeleccionadas = Array.from(document.querySelectorAll('#salsasContainer input:checked')).map(cb => cb.value);
+    const comentario = document.getElementById('comentario').value.trim();
+
+    if (!tamano || isNaN(toppingsCantidad) || saboresSeleccionados.length === 0 || toppingsSeleccionados.length === 0) {
+      alert("Completa todos los campos y selecciona sabores y toppings.");
+      return;
+    }
+
+    const precio = precios[tamano][toppingsCantidad];
+    helados.push({ tamano, toppingsCantidad, sabores: saboresSeleccionados, toppings: toppingsSeleccionados,  salsas: salsasSeleccionadas, comentario, precio });
+    mostrarHelados();
+
+    // Limpiar inputs
+    document.getElementById('tamano').value = "";
+    document.getElementById('cantidadToppings').value = "";
+    document.getElementById('comentario').value = "";
+    document.getElementById('precioTotal').textContent = "Precio total: $0";
+    actualizarSabores();
+    actualizarToppings();
+    actualizarSalsas();
+  }
+
+  function mostrarHelados() {
+    const lista = document.getElementById('listaHelados');
+    lista.innerHTML = "";
+    let total = 0;
+
+    helados.forEach((h, i) => {
+      const div = document.createElement('div');
+      div.innerHTML = `🍨 <b>Helado ${i+1}</b>: ${h.tamano}<br>
+        Sabores: ${h.sabores.join(', ')}<br>
+        Toppings: ${h.toppings.join(', ')}<br>
+        Salsas: ${h.salsas.join(', ')}<br>
+        Subtotal: $${h.precio.toLocaleString()}<br>
+        ${h.comentario ? '📝 ' + h.comentario + '<br>' : ''}
+        <button onclick="eliminarHelado(${i})">❌ Eliminar</button><hr>`;
+      lista.appendChild(div);
+      total += h.precio;
+    });
+
+    document.getElementById('totalGeneral').textContent = `Total acumulado: $${total.toLocaleString()}`;
+  }
+
+  function eliminarHelado(index) {
+    helados.splice(index, 1);
+    mostrarHelados();
+  }
+
+  function enviarPedido() {
+    const nombre = document.getElementById('nombre').value.trim();
+    if (!nombre || helados.length === 0) {
+      alert("Por favor ingresa tu nombre y agrega al menos un helado.");
+      return;
+    }
+
+    let mensaje = `Hola, soy ${nombre}%0AQuiero pedir los siguientes Helados EV:%0A`;
+    let total = 0;
+
+    helados.forEach((h, i) => {
+      mensaje += `%0A🍨 Helado ${i+1}:%0A`;
+      mensaje += `- Tamaño: ${h.tamano}%0A`;
+      mensaje += `- Sabores: ${h.sabores.join(', ')}%0A`;
+      mensaje += `- Toppings: ${h.toppings.join(', ')}%0A`;
+      mensaje += `- Salsas: ${h.salsas.join(', ')}%0A`;
+      if (h.comentario) mensaje += `- Comentario: ${h.comentario}%0A`;
+      mensaje += `- Subtotal: $${h.precio.toLocaleString()}%0A`;
+      total += h.precio;
+    });
+
+    mensaje += `%0A💰 Total: $${total.toLocaleString()}`;
+    const numeroWhatsApp = "573023367847";
+    const url = `https://wa.me/${numeroWhatsApp}?text=${mensaje}`;
+    window.open(url, "_blank");
+  }
+
+  // Inicialización
+  actualizarSabores();
+  actualizarToppings();
+  actualizarSalsas();
+</script>
+
+</body>
+</html>
