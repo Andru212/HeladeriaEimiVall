@@ -137,8 +137,27 @@ body {
     object-fit: cover;
     border-radius: 20px;
     margin: 20px auto;
-    animation: salto 1s ease-in-out 1.2s infinite;
+    animation: slideBounceRight 1.2s ease-out, salto 1s ease-in-out 1.2s infinite;
   }
+  
+
+  @keyframes slideBounceRight {
+    0% {
+      opacity: 0;
+      transform: translateX(100%); /* 👉 empieza desde la derecha */
+    }
+    60% {
+      transform: translateX(-30%);
+    }
+    80% {
+      transform: translateX(10%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
   
   @keyframes slideBounce {
     0% {
