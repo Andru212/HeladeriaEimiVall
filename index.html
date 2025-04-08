@@ -164,7 +164,7 @@ body {
     <input type="text" id="nombre" placeholder="Ej: Camila" required>
 
     <label for="tamano">Tamaño del Helado:</label>
-    <select id="tamano" onchange="actualizarSabores(); actualizarToppings(); actualizarPrecio();" required>
+    <select id="tamano" onchange="actualizarSabores(); actualizarToppings(); actualizarSalsas(); actualizarPrecio();" required>
       <option value="">Selecciona</option>
       <option value="pequeño">Pequeño (2 rollos / 1 sabor)</option>
       <option value="mediano">Mediano (4 rollos / hasta 2 sabores)</option>
@@ -301,6 +301,7 @@ body {
     const toppingExtra = parseInt(document.getElementById('cantidadToppings').value || 0);
     if (!tamano) {
       document.getElementById('precioTotal').textContent = "Precio total: $0";
+      document.getElementById('precioTotal1').textContent = "Precio total: $0";
       return;
     }
     const precioBase = precios[tamano][toppingExtra];
@@ -330,6 +331,7 @@ body {
     document.getElementById('cantidadToppings').value = "";
     document.getElementById('comentario').value = "";
     document.getElementById('precioTotal').textContent = "Precio total: $0";
+    document.getElementById('precioTotal1').textContent = "Precio total: $0";
     actualizarSabores();
     actualizarToppings();
     actualizarSalsas();
@@ -372,7 +374,7 @@ body {
     let total = 0;
 
     helados.forEach((h, i) => {
-      mensaje += `%0A🍨 Helado ${i+1}:%0A`;
+      mensaje += `%0A Helado ${i+1}:%0A`;
       mensaje += `- Tamaño: ${h.tamano}%0A`;
       mensaje += `- Sabores: ${h.sabores.join(', ')}%0A`;
       mensaje += `- Toppings: ${h.toppings.join(', ')}%0A`;
@@ -382,10 +384,20 @@ body {
       total += h.precio;
     });
 
-    mensaje += `%0A💰 Total: $${total.toLocaleString()}`;
+    mensaje += `%0A Total: $${total.toLocaleString()}`;
     const numeroWhatsApp = "573046553634";
     const url = `https://wa.me/${numeroWhatsApp}?text=${mensaje}`;
     window.open(url, "_blank");
+
+        // Limpiar inputs
+        document.getElementById('tamano').value = "";
+        document.getElementById('cantidadToppings').value = "";
+        document.getElementById('comentario').value = "";
+        document.getElementById('precioTotal').textContent = "Precio total: $0";
+        document.getElementById('precioTotal1').textContent = "Precio total: $0";
+        actualizarSabores();
+        actualizarToppings();
+        actualizarSalsas();
   }
 
   // Inicialización
