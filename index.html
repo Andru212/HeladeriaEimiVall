@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Pedidos Heladería EV</title>
+  <title>Heladeria</title>
+  <link rel="icon" href="Logo.png" type="image/png">
   <style>
   /* Estilo general para pantallas móviles */
 body {
@@ -59,7 +60,8 @@ body {
   
   .sabores-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap; /* Permite que se ajusten cuando no caben */
     gap: 10px;
     margin-top: 10px;
   }
@@ -231,8 +233,8 @@ body {
   <div class="total-general" id="totalGeneral">Total acumulado: $0</div>
 
 <script>
-  const sabores = ['Quipitos', 'Arequipe', 'Mango', 'Crema de avellanas', 'Crema de wisky', 'Café', 'Coco', 'Fresa', 'Oreo', 'Kinder'];
-  const toppingsDisponibles = ['Gomita', 'Bandera', 'Maní', 'Gusanito', 'M&M'];
+  const sabores = ['Maracuya','Fresa','Piña','Mango','Café','Coco','Chocolate','Cereza','Chicle','Limon','Durazno','Kiwi','Guanabana','Mora','Quipitos','Arequipe','Kindes','Oreo','Piña colada','Crema de whisky','Crema de avellanas'];
+  const toppingsDisponibles = ['Moritas','Grageas','Chocomelos', 'Bandera','Chips de chocolate','Coco', 'Maní', 'chicles', 'barquillos', 'Chocokrispis'];
   const salsasDisponibles = ['Chocolate', 'Cereza', 'Arequipe', 'Chicle', 'Mora'];
   const precios = {
     pequeño: [3500, 4500, 5500],
