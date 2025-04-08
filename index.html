@@ -214,41 +214,55 @@ body {
   }
   
   
-  .tabla-precios {
-    text-align: center;
-    margin: 20px auto;
-    padding: 10px;
-    max-width: 600px;
-    background: #fff3f8;
+  .precios-movil {
+    background: #fff0f8;
+    padding: 15px;
     border-radius: 15px;
-    box-shadow: 0 0 10px rgba(255, 128, 171, 0.3);
+    margin: 20px auto;
+    width: 95%;
+    box-shadow: 0 2px 6px rgba(255, 128, 171, 0.2);
+    text-align: center;
+    font-size: 1.05em;
   }
   
-  .tabla-precios h2 {
+  .precios-movil h2 {
     color: #d63384;
     margin-bottom: 10px;
+    font-size: 1.3em;
   }
   
-  .tabla-precios table {
-    width: 100%;
-    border-collapse: collapse;
+  .precio-header,
+  .precio-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 5px;
+    border-radius: 8px;
+    font-weight: bold;
   }
   
-  .tabla-precios th,
-  .tabla-precios td {
-    padding: 8px 12px;
-    border: 1px solid #ffc0cb;
-    font-size: 1em;
+  .precio-header {
+    background: #ffd6e8;
+    color: #880044;
   }
   
-  .tabla-precios th {
-    background-color: #ffd6e0;
-    color: #8b005d;
+  .precio-item {
+    background: #ffe5f1;
+    color: #5b005b;
+    margin-top: 6px;
   }
   
-  .tabla-precios tr:nth-child(even) {
-    background-color: #fff0f5;
+  .precio-item span,
+  .precio-header span {
+    flex: 1;
+    text-align: center;
   }
+  
+  .precio-item span.tam,
+  .precio-header span.tam {
+    flex: 1.4;
+    text-align: left;
+  }
+  
   
       
   </style>
@@ -264,39 +278,34 @@ body {
   </header>
 
 
-  <div class="tabla-precios">
-    <h2>🍨 Precios según tamaño y toppings</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Tamaño</th>
-          <th>1 Topping</th>
-          <th>2 Toppings</th>
-          <th>3 Toppings</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Pequeño</td>
-          <td>$3.500</td>
-          <td>$4.500</td>
-          <td>$5.500</td>
-        </tr>
-        <tr>
-          <td>Mediano</td>
-          <td>$6.500</td>
-          <td>$7.500</td>
-          <td>$8.500</td>
-        </tr>
-        <tr>
-          <td>Grande</td>
-          <td>$8.500</td>
-          <td>$9.500</td>
-          <td>$10.500</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="precios-movil">
+    <h2>🍦 Precios</h2>
+    <div class="precio-header">
+      <span class="tam">Tamaño</span>
+      <span>Incluye 1</span>
+      <span>+1 Topping</span>
+      <span>+2 Toppings</span>
+    </div>
+    <div class="precio-item">
+      <span class="tam">Pequeño</span>
+      <span>$3.500</span>
+      <span>$4.500</span>
+      <span>$5.500</span>
+    </div>
+    <div class="precio-item">
+      <span class="tam">Mediano</span>
+      <span>$6.500</span>
+      <span>$7.500</span>
+      <span>$8.500</span>
+    </div>
+    <div class="precio-item">
+      <span class="tam">Grande</span>
+      <span>$8.500</span>
+      <span>$9.500</span>
+      <span>$10.500</span>
+    </div>
   </div>
+  
   
   
 
