@@ -214,6 +214,41 @@ body {
   }
   
   
+  .tabla-precios {
+    text-align: center;
+    margin: 20px auto;
+    padding: 10px;
+    max-width: 600px;
+    background: #fff3f8;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(255, 128, 171, 0.3);
+  }
+  
+  .tabla-precios h2 {
+    color: #d63384;
+    margin-bottom: 10px;
+  }
+  
+  .tabla-precios table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .tabla-precios th,
+  .tabla-precios td {
+    padding: 8px 12px;
+    border: 1px solid #ffc0cb;
+    font-size: 1em;
+  }
+  
+  .tabla-precios th {
+    background-color: #ffd6e0;
+    color: #8b005d;
+  }
+  
+  .tabla-precios tr:nth-child(even) {
+    background-color: #fff0f5;
+  }
   
       
   </style>
@@ -227,6 +262,42 @@ body {
   <header style="text-align: center; margin: 20px 0;">
     <img src="Logo.png" alt="Logo Heladería" class="logo-brincando">
   </header>
+
+
+  <div class="tabla-precios">
+    <h2>🍨 Precios según tamaño y toppings</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Tamaño</th>
+          <th>1 Topping</th>
+          <th>2 Toppings</th>
+          <th>3 Toppings</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Pequeño</td>
+          <td>$3.500</td>
+          <td>$4.500</td>
+          <td>$5.500</td>
+        </tr>
+        <tr>
+          <td>Mediano</td>
+          <td>$6.500</td>
+          <td>$7.500</td>
+          <td>$8.500</td>
+        </tr>
+        <tr>
+          <td>Grande</td>
+          <td>$8.500</td>
+          <td>$9.500</td>
+          <td>$10.500</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
   
 
   <form onsubmit="event.preventDefault(); agregarHelado();">
