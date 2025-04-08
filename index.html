@@ -147,13 +147,37 @@ body {
     }
   }
   
+  .slide-in-left {
+    animation: slideBounce 1.2s ease-out forwards;
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  
+  @keyframes slideBounce {
+    0% {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+    60% {
+      transform: translateX(30%);
+    }
+    80% {
+      transform: translateX(-10%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
   
       
   </style>
 </head>
 <body>
 
-  <h1>🍦 Pedidos Heladería EV 🍓</h1>
+  <h1 class="slide-in-left">🍦 Pedidos Heladería EV 🍓</h1>
+
   <header style="text-align: center; margin: 20px 0;">
     <img src="Logo.png" alt="Logo Heladería" class="logo-brincando">
   </header>
