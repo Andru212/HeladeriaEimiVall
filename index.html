@@ -149,12 +149,6 @@ body {
     }
   }
   
-  .slide-in-left {
-    animation: slideBounce 1.2s ease-out forwards;
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-  
   @keyframes slideBounce {
     0% {
       opacity: 0;
@@ -172,13 +166,37 @@ body {
     }
   }
   
+  @keyframes animarDegradado {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  .titulo-degradado {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 2.5em;
+    text-align: center;
+    margin: 1em 0;
+  
+    animation: slideBounce 1.2s ease-out, animarDegradado 5s infinite alternate ease-in-out;
+  
+    background: linear-gradient(90deg, #ffafbd, #ffc3a0, #fbc2eb, #a18cd1);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  
   
       
   </style>
 </head>
 <body>
 
-  <h1 class="slide-in-left">🍦 Pedidos Heladería EV 🍓</h1>
+  <h1 class="titulo-degradado">Heladería EimyVall </h1>
 
   <header style="text-align: center; margin: 20px 0;">
     <img src="Logo.png" alt="Logo Heladería" class="logo-brincando">
