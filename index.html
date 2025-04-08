@@ -179,8 +179,11 @@ body {
       <option value="2">2 adicionales</option>
     </select>
 
+    <p id="precioTotal1"><strong>Precio total:</strong> $0</p> <!-- Nuevo arriba -->
+
     <label>Selecciona los sabores:</label>
     <div id="saboresContainer" class="sabores-container"></div>
+    
 
     <label>Selecciona los toppings:</label>
     <div id="toppingsContainer" class="sabores-container"></div>
@@ -302,6 +305,7 @@ body {
     }
     const precioBase = precios[tamano][toppingExtra];
     document.getElementById('precioTotal').textContent = `Precio total: $${precioBase.toLocaleString()}`;
+    document.getElementById('precioTotal1').textContent = `Precio total: $${precioBase.toLocaleString()}`;
   }
 
   function agregarHelado() {
