@@ -128,6 +128,25 @@ body {
       padding: 1em 0.5em;
     }
   }
+
+  .logo-brincando {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin: 20px auto;
+    animation: salto 1s ease-in-out infinite;
+  }
+  
+  @keyframes salto {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+  
   
       
   </style>
@@ -135,6 +154,10 @@ body {
 <body>
 
   <h1>🍦 Pedidos Heladería EV 🍓</h1>
+  <header style="text-align: center; margin: 20px 0;">
+    <img src="Logo.png" alt="Logo Heladería" class="logo-brincando">
+  </header>
+  
 
   <form onsubmit="event.preventDefault(); agregarHelado();">
     <label for="nombre">Tu nombre:</label>
@@ -262,7 +285,7 @@ body {
       setTimeout(() => alerta.style.display = "none", 3000);
     }
   
-    document.querySelectorAll('.topping').forEach(div => {
+    document.querySelectorAll('.sabor').forEach(div => {
       div.classList.toggle('selected', div.querySelector('input').checked);
     });
   }
@@ -356,7 +379,7 @@ body {
     });
 
     mensaje += `%0A💰 Total: $${total.toLocaleString()}`;
-    const numeroWhatsApp = "573023367847";
+    const numeroWhatsApp = "573046553634";
     const url = `https://wa.me/${numeroWhatsApp}?text=${mensaje}`;
     window.open(url, "_blank");
   }
