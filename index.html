@@ -507,27 +507,31 @@ const salsasDisponibles = [
 
   const estrellas = document.querySelectorAll('.estrella');
   const resultado = document.getElementById('resultadoCalificacion');
-  
-  estrellas.forEach((estrella, index) => {
+
+  // 1. Mostrar calificación previa si existe
+  const calificacionGuardada = localStorage.getItem('calificacion');
+  if (calificacionGuardada) {
+    marcarEstrellas(calificacionGuardada);
+    resultado.textContent = `Gracias por tu calificación: ${calificacionGuardada} estrella(s)`;
+  }
+
+  // 2. Cuando se hace clic en una estrella
+  estrellas.forEach(estrella => {
     estrella.addEventListener('click', () => {
-      const valor = index + 1;
-  
-      estrellas.forEach((e, i) => {
-        e.classList.toggle('seleccionada', i < valor);
-      });
-  
-      resultado.textContent = `¡Gracias! Calificaste con ${valor} estrella${valor > 1 ? 's' : ''} ⭐`;
-  
-        // Enviar al servidor
-        fetch('guardar.php', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-          body: `calificacion=${valor}`
-        })
-        .then(res => res.text())
-        .then(data => console.log(data));
+      const valor = estrella.getAttribute('data-valor');
+      localStorage.setItem('calificacion', valor); // Guardar en localStorage
+      marcarEstrellas(valor);
+      resultado.textContent = `Gracias por tu calificación: ${valor} estrella(s)`;
     });
   });
+
+  // 3. Función para marcar visualmente las estrellas
+  function marcarEstrellas(valor) {
+    estrellas.forEach(est => {
+      const valorEstrella = est.getAttribute('data-valor');
+      est.classList.toggle('seleccionada', valorEstrella <= valor);
+    });
+  }
   
   
 
