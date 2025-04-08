@@ -469,10 +469,14 @@ const salsasDisponibles = [
 
 
 
-function reproducirPop() {
-  sonidoPop.currentTime = 0; // Reinicia por si ya está sonando
-  sonidoPop.play();
-}
+  function reproducirPop() {
+    if (!sonidoPop.paused) {
+      sonidoPop.currentTime = 0; // Reiniciar si ya está sonando
+    }
+    sonidoPop.play().catch(e => {
+      console.warn("No se pudo reproducir el sonido:", e);
+    });
+  }
 
 
 
@@ -588,6 +592,8 @@ function reproducirPop() {
   actualizarToppings();
   actualizarSalsas();
 </script>
+
+<audio id="sonidoPop" src="sonidos/pop-39222.mp3" preload="auto"></audio>
 
 </body>
 </html>
